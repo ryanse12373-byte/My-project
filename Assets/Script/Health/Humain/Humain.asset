@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3979baf00b94ebd459a52e8cfce64b30, type: 3}
+  m_Name: Humain
+  m_EditorClassIdentifier: Assembly-CSharp::RaceSO
+  raceName: Humain
+  maxBlood: 100
+  normalBody:
+  - {fileID: 11400000, guid: ae7a662a80d37b64f8a1344dc9fe97d4, type: 2}
+  - {fileID: 11400000, guid: 780b242ff8cfe3e458872f0a5983517a, type: 2}
+  - {fileID: 11400000, guid: 965249b3210d7814a87a70dc2312beb0, type: 2}
+  - {fileID: 11400000, guid: bea2cc2245995384b90f451e66ee43f3, type: 2}
+  - {fileID: 11400000, guid: fd5a4fb982708df4c81dded3acb785b7, type: 2}
+  - {fileID: 11400000, guid: 7f03fda358cedd843b3e9c40089688e3, type: 2}
+  requiredFunctions: 00000000010000000200000003000000
