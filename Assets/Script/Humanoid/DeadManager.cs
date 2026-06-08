@@ -42,7 +42,7 @@ public class DeadManager : MonoBehaviour
             navMeshObstacle.enabled = true;
         Vector3 forceDir = -transform.forward + Vector3.up * 0.2f;
         rb.AddForce(forceDir.normalized * 0.1f, ForceMode.Impulse);
-        Destroy(gameObject, 20f);
+        //Destroy(gameObject, 20f);
     }
 
 }

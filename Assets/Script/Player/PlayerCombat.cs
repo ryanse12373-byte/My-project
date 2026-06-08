@@ -67,6 +67,9 @@ public class PlayerCombat : MonoBehaviour
     {
         if(stamina.value < 20) yield break;
         stamina.RemoveStamina(20);
+
+        weaponAnim.SetTrigger("Attack");
+        
         RaycastHit hit;
 
         if (!Physics.Raycast(playerOrientation.position, playerOrientation.forward, out hit, range))
@@ -79,7 +82,7 @@ public class PlayerCombat : MonoBehaviour
 
         yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
 
-     weaponAnim.SetTrigger("Attack");
+     
 
         MeleeCombatIA enemy = hit.collider.GetComponent<MeleeCombatIA>();
         if (enemy != null && enemy.GetComponent<Health>().isDead == false)

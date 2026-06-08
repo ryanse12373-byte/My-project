@@ -40,13 +40,14 @@ public class CombatAction : MonoBehaviour
 
     float nextActionTime = 0f;
 
-    //Attack Slot
-    public int maxAttacker;
-
     public Collider[] buffer = new Collider[100];
     [SerializeField] private LayerMask detectionLayer;
 
     private float nextPathUpdate;
+
+    public int attackersCount = 0;
+    public int maxAttackers = 2;
+    private bool isResetting = false;
     
     public void UpdateStates()
     {
@@ -56,6 +57,10 @@ public class CombatAction : MonoBehaviour
         range = humanoidState.range;
         stamina.maxValue = humanoidState.endurance * 5;
         strenght = humanoidState.strenght;
+    }
+    public bool CanBeTargeted()
+    {
+        return attackersCount < maxAttackers;
     }
 
     public void LookAtEnnemy()
@@ -68,9 +73,22 @@ public class CombatAction : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
     }
+    public void TrySetEnemy(GameObject newEnemy)
+    {
+        CombatAction targetCombat = newEnemy.GetComponent<CombatAction>();
+
+        if (targetCombat == null) return;
+
+        if (!targetCombat.CanBeTargeted()) return;
+
+        SetEnemy(newEnemy);
+        targetCombat.attackersCount++;
+    }
 
     public void SetEnemy(GameObject newEnemy)
     {
+        if(ennemy == newEnemy)return;
+
         if (ennemyHealth != null)
             ennemyHealth.OnDeath -= ResetEnemy;
             
@@ -84,28 +102,62 @@ public class CombatAction : MonoBehaviour
         humainState.hasReactedToAttack = false;
             if (ennemyHealth != null)
         ennemyHealth.OnDeath += ResetEnemy;
+    
+    if (ennemy != null)
+    {
+        CombatAction old = ennemy.GetComponent<CombatAction>();
+        if (old != null)
+            old.attackersCount = Mathf.Max(0, old.attackersCount - 1);
+    }
+
+    
+
+    if (ennemy == null)
+        return;
+
+    enemyScript = ennemy.GetComponent<MeleeCombatIA>();
+    enemyState = ennemy.GetComponent<HumainState>();
+    ennemyCreature = ennemy.GetComponent<Creature>();
+    ennemyHealth = ennemy.GetComponent<Health>();
+    ennemyStamina = ennemy.GetComponent<Stamina>();
+
+    humainState.hasReactedToAttack = false;
     }
     
     public void ResetEnemy()
 {
+    if (isResetting) return;
+        isResetting = true;
+
+    if (ennemy != null)
+{
+    CombatAction targetCombat = enemyScript.combatAction;
+    if (targetCombat != null)
+        targetCombat.attackersCount--;
+}
     ennemy = null;
     ennemyHealth = null;
     enemyScript = null;
     enemyState = null;
     ennemyCreature = null;
+    print("kirk" + gameObject.name);
 
     if (agent != null && agent.isOnNavMesh)
     {
         agent.ResetPath();
     }
+    
 
     humainState.isAttacking = false;
     humainState.isThinking = false;
+    isResetting = false;
 }
     public void Regenerate()
     {
         stamina.addStamina(regenRate * Time.deltaTime);
     }
+
+
 
 public void HandleMovement(float dist)
 {
@@ -151,6 +203,7 @@ public void HandleMovement(float dist)
         float k = 0.8f;
         int rand = UnityEngine.Random.Range(0, 100);
         float chance = MathF.Pow(attackStat / 100, k) * 100f;
+        
 
         if (rand < Mathf.Max(chance, 25f))
         {
@@ -182,7 +235,7 @@ public void HandleMovement(float dist)
         if (enemyScript != null && ennemyHealth.isDead == false)
         {
             enemyScript.HandleEnemyReaction();
-            ennemy.GetComponent<CombatAction>().SetEnemy(gameObject);
+            ennemy.GetComponent<CombatAction>().TrySetEnemy(gameObject);
         }
 
         yield return new WaitForSeconds(UnityEngine.Random.Range(0.2f, 0.4f));
@@ -228,7 +281,9 @@ public void HandleMovement(float dist)
                     float a = attackStat / 100f;
                     float w = weapon.GetComponent<WeaponState>().damage / 100f;
                     damage = ((s * 0.3f) + (a * 0.4f) + (w * 0.3f)) *100;
-                    ennemyHealth.TakeDamage(Mathf.FloorToInt(damage), ennemyHealth.GetRandomBodyPart());
+                    float damageReduction = (humanoidState.strenght/100 * 0.4f + humanoidState.defenceStat/100 * 0.6f)*50;
+                    print(damageReduction);
+                    ennemyHealth.TakeDamage(Mathf.FloorToInt(damage - damageReduction), ennemyHealth.GetRandomBodyPart());
                 }
             }
         }
@@ -248,6 +303,7 @@ public void HandleMovement(float dist)
         return Physics.OverlapSphereNonAlloc(transform.position, fov, buffer, detectionLayer);
         
     }
+    
     public void HandleEnemyReaction()
     {
         if (!humainState.hasReactedToAttack && !humainState.isParring && !humainState.isStuned)

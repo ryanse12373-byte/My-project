@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: brain
   m_EditorClassIdentifier: Assembly-CSharp::OrganSO
   organName: Brain
-  size: 0
-  maxHealth: 0
+  size: 25
+  maxHealth: 50
   vital: 1
   efficase: 100
   function: 4

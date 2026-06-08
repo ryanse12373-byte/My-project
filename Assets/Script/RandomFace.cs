@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RandomFace : MonoBehaviour
 {
-    [SerializeField] private GameObject face;
+    public GameObject face;
 
     private Material[] materials;
 

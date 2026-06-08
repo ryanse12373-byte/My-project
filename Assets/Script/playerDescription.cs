@@ -26,6 +26,7 @@ public class playerDescription : MonoBehaviour
                 }
             }
         }
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (CreatureDescription.Instance.description.activeSelf)
@@ -33,6 +34,19 @@ public class playerDescription : MonoBehaviour
                 CreatureDescription.Instance.HideDescription(selectedCreature);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(playerOrientation.position + playerOrientation.forward , playerOrientation.forward, out hit, range))
+            {
+                Creature creature = hit.collider.GetComponent<Creature>();
+                if(creature != null)
+                {
+                    creature.health.Die();
+                }
+                
+            }
+        }
     }
-    
 }

@@ -20,8 +20,6 @@ public class Creature : MonoBehaviour
 
     void Start()
     {
-        firstName = IAGenerator.Instance.prenoms[Random.Range(0, IAGenerator.Instance.prenoms.Count())];
-        lastName = IAGenerator.Instance.nomsDeFamille[Random.Range(0, IAGenerator.Instance.nomsDeFamille.Count())];
         health.blood = race.maxBlood;
         GenerateBody();
     }

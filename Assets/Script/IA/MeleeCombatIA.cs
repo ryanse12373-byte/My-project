@@ -15,20 +15,13 @@ public class MeleeCombatIA : MonoBehaviour
     private float timer = 0;
     private float tickSpeed = 0.2f;
 
-    [SerializeField] private float forgetDistance = 15f;
-    [SerializeField] private float recheckTime = 0.5f;
-
-    private float recheckTimer;
-
-    [SerializeField] private float activeDistance = 25f;
-    private Transform player;
+    [SerializeField] private float angle;
     
 
     
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         creature = GetComponent<Creature>();
         faction = creature.faction;
         
@@ -37,7 +30,7 @@ public class MeleeCombatIA : MonoBehaviour
         combatAction.UpdateStates();
 
         if (combatAction.ennemy != null && !combatAction.ennemyHealth.isDead)
-            combatAction.SetEnemy(combatAction.ennemy);
+            combatAction.TrySetEnemy(combatAction.ennemy);
 
         faction = GetComponent<Creature>().faction;
 
@@ -46,12 +39,9 @@ public class MeleeCombatIA : MonoBehaviour
 
 void Update()
 {
-    float distanceWithPlayer = Vector3.Distance(transform.position, player.position);
     combatAction.Regenerate();
-    if (distanceWithPlayer > activeDistance)
-    {
-        combatAction.LookAtEnnemy();
-    }
+    combatAction.LookAtEnnemy();
+    
 
     if (humainState.isStuned)
         return;
@@ -76,6 +66,22 @@ void Update()
 
         if (creature == null || creature.gameObject == gameObject || creature.health.isDead)
             continue;
+
+        float signedAngle = Vector3.Angle(transform.forward, col.transform.position - transform.position);
+
+        if (signedAngle > angle * 0.5f)
+            continue;
+
+Vector3 dir = col.transform.position - transform.position;
+float d = dir.magnitude;
+dir /= d;
+
+// obstacle check
+if (Physics.Raycast(transform.position + Vector3.up * 1.5f, dir, out RaycastHit hit, d))
+{
+    if (hit.collider.gameObject != col.gameObject)
+        continue;
+}
 
         // ignore same faction
         FactionSO myFaction = faction;
@@ -108,31 +114,6 @@ if (combatAction.ennemy == null || combatAction.ennemyHealth.isDead)
     if (closest != null)
         combatAction.SetEnemy(closest);
 }
-/*else
-{
-    recheckTimer += Time.deltaTime;
-
-    if (recheckTimer >= recheckTime)
-    {
-        recheckTimer = 0f;
-
-        float dist = Vector3.Distance(
-            transform.position,
-            combatAction.ennemy.transform.position
-        );
-
-        bool shouldSwitch =
-            combatAction.ennemyHealth == null ||
-            combatAction.ennemyHealth.bodyParts.Count == 0 ||
-            dist > forgetDistance||
-            combatAction.ennemyHealth.isDead;
-
-        if (shouldSwitch && closest != null)
-        {
-            combatAction.SetEnemy(closest);
-        }
-    }
-}*/
     if (combatAction.ennemy == null|| combatAction.ennemyHealth.isDead)
         return;
 
@@ -159,6 +140,38 @@ if (combatAction.ennemy == null || combatAction.ennemyHealth.isDead)
     {
         combatAction.agent.ResetPath();
         return;
+    }
+}
+
+void OnDrawGizmosSelected()
+{
+    Gizmos.color = Color.yellow;
+
+    // distance max
+    Gizmos.DrawWireSphere(transform.position, combatAction != null ? combatAction.fov : 5f);
+
+    float halfAngle = angle * 0.5f;
+
+    Vector3 forward = transform.forward;
+
+    Vector3 leftDir = Quaternion.Euler(0, -halfAngle, 0) * forward;
+    Vector3 rightDir = Quaternion.Euler(0, halfAngle, 0) * forward;
+
+    Gizmos.color = Color.red;
+    Gizmos.DrawLine(transform.position, transform.position + leftDir * combatAction.fov);
+    Gizmos.DrawLine(transform.position, transform.position + rightDir * combatAction.fov);
+
+    // lignes intermédiaires (optionnel)
+    Gizmos.color = new Color(1, 0.5f, 0);
+    int steps = 10;
+
+    for (int i = 0; i <= steps; i++)
+    {
+        float t = i / (float)steps;
+        float currentAngle = Mathf.Lerp(-halfAngle, halfAngle, t);
+
+        Vector3 dir = Quaternion.Euler(0, currentAngle, 0) * forward;
+        Gizmos.DrawLine(transform.position, transform.position + dir * combatAction.fov);
     }
 }
 

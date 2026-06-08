@@ -11,11 +11,9 @@ public class PlayerCam : MonoBehaviour
 
     float xRotation;
     float yRotation;
-
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     void Update()
@@ -29,5 +27,23 @@ public class PlayerCam : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        HandleCursor();
+    }
+
+    void HandleCursor()
+    {
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if(Cursor.lockState == CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+
     }
 }

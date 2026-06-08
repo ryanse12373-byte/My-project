@@ -19,6 +19,7 @@ public class PlayerActionManager : MonoBehaviour
 
     void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.T))
         {
             TryTill();

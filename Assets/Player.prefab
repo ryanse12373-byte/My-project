@@ -171,6 +171,7 @@ MonoBehaviour:
     faction: {fileID: 0}
     defenseStat: 0
     attackStat: 0
+    strenght: 0
     maxHp: 0
     lastName: 
     firstName: 
@@ -292,7 +293,6 @@ GameObject:
   - component: {fileID: 3352340986852225283}
   - component: {fileID: 1049389942766085517}
   - component: {fileID: 4964468162372708742}
-  - component: {fileID: 2830509763892686493}
   - component: {fileID: 4463730096279833633}
   - component: {fileID: 8810178091529754612}
   m_Layer: 0
@@ -381,225 +381,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundDrag: 5
---- !u!114 &2830509763892686493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3830307121093646225}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b4dcca43547af547ad19452e27006f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::IAGenerator
-  SimulatedIANumber: 10000
-  characterData: []
-  prenoms:
-  - "Ad\xE8le"
-  - Adrien
-  - Agathe
-  - Alain
-  - Albert
-  - Alexandre
-  - Alice
-  - Aline
-  - Amandine
-  - "Am\xE9lie"
-  - "Andr\xE9"
-  - Anne
-  - Antoine
-  - Arthur
-  - Audrey
-  - "Aur\xE9lie"
-  - Baptiste
-  - Benjamin
-  - Bernard
-  - Brigitte
-  - Camille
-  - Caroline
-  - Catherine
-  - Charles
-  - Charlotte
-  - Christophe
-  - Claire
-  - "Cl\xE9ment"
-  - Corentin
-  - Damien
-  - Daniel
-  - David
-  - Delphine
-  - Denis
-  - Dominique
-  - "\xC9douard"
-  - "\xC9lise"
-  - Emma
-  - Emmanuel
-  - "\xC9ric"
-  - "\xC9tienne"
-  - Fabien
-  - Fabrice
-  - Florence
-  - "Fran\xE7ois"
-  - Gabriel
-  - "Ga\xEBlle"
-  - Georges
-  - "G\xE9rard"
-  - Guillaume
-  - "H\xE9l\xE8ne"
-  - Henri
-  - Hugo
-  - Isabelle
-  - Jacques
-  - Jean
-  - "J\xE9r\xF4me"
-  - "Jo\xEBl"
-  - Jonathan
-  - Joseph
-  - Julie
-  - Julien
-  - Karine
-  - Kevin
-  - Laurent
-  - "L\xE9a"
-  - Louis
-  - Luc
-  - Lucas
-  - Lucie
-  - Marc
-  - Margaux
-  - Marie
-  - Marion
-  - Mathieu
-  - Maxime
-  - Michel
-  - Monique
-  - Nathalie
-  - Nicolas
-  - Nina
-  - "No\xE9mie"
-  - Olivier
-  - Patricia
-  - Patrick
-  - Paul
-  - Philippe
-  - Pierre
-  - Quentin
-  - "Rapha\xEBl"
-  - Richard
-  - Robert
-  - Romain
-  - Sabrina
-  - Samuel
-  - Sandrine
-  - Sarah
-  - "S\xE9bastien"
-  - Sophie
-  - "St\xE9phane"
-  - Sylvie
-  - Thomas
-  - "Val\xE9rie"
-  - Victor
-  - Vincent
-  - Xavier
-  - Yann
-  - Yves
-  nomsDeFamille:
-  - Adam
-  - Albert
-  - Allard
-  - Andre
-  - Arnaud
-  - Aubert
-  - Barbier
-  - Baron
-  - Benoit
-  - Berger
-  - Bernard
-  - Blanc
-  - Blanchard
-  - Bonnet
-  - Boucher
-  - Bourgeois
-  - Boyer
-  - Brun
-  - Caron
-  - Charles
-  - Chevalier
-  - Clement
-  - Colin
-  - David
-  - Denis
-  - Deschamps
-  - Dubois
-  - Dufour
-  - Dumas
-  - Dupont
-  - Durand
-  - Faure
-  - Fernandez
-  - Fontaine
-  - Fournier
-  - Francois
-  - Gaillard
-  - Garcia
-  - Garnier
-  - Gauthier
-  - Gerard
-  - Gilbert
-  - Girard
-  - Guerin
-  - Guillot
-  - Henry
-  - Hubert
-  - Jacob
-  - Jean
-  - Joly
-  - Lacroix
-  - Lambert
-  - Laurent
-  - Leclerc
-  - Lecomte
-  - Lefebvre
-  - Legrand
-  - Lemaire
-  - Lemoine
-  - Leroy
-  - Lopez
-  - Marchand
-  - Martin
-  - Masson
-  - Mathieu
-  - Mercier
-  - Meunier
-  - Michel
-  - Moreau
-  - Morin
-  - Moulin
-  - Nicolas
-  - Noel
-  - Olivier
-  - Perrin
-  - Petit
-  - Philippe
-  - Picard
-  - Pierre
-  - Poirier
-  - Renard
-  - Renaud
-  - Rey
-  - Richard
-  - Robert
-  - Robin
-  - Roche
-  - Roger
-  - Roux
-  - Roy
-  - Schmitt
-  - Thomas
-  - Vidal
-  - Vincent
-  - Weber
 --- !u!114 &4463730096279833633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,6 +406,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4b1d8c69563d49439355ddd95489013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  terrain: {fileID: 0}
+  radius: 5
+  maxRange: 0
+  plant: {fileID: 0}
 --- !u!1 &4751866279107442502
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8e00c6dc85571541840695e5e4d0285, type: 3}
+  m_Name: Dechaut
+  m_EditorClassIdentifier: Assembly-CSharp::NpcSO
+  attackStat: 80
+  defenceStat: 80
+  strenght: 100
+  endurance: 80
+  cooldown: 0.5
+  range: 2.5
+  faction: {fileID: 11400000, guid: 05d766836a81f4747b5930839b57d408, type: 2}
+  firstName: Jean
+  lastName: Dechaut
+  race: {fileID: 11400000, guid: ed4c812e4e460944bb0b50323dab4c02, type: 2}

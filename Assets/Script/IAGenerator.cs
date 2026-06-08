@@ -79,7 +79,7 @@ public class IAGenerator : MonoBehaviour
     }
 
 
-    public string[] prenoms =
+    private string[] prenoms =
 {
     "Adèle",
     "Adrien",
@@ -192,7 +192,7 @@ public class IAGenerator : MonoBehaviour
     "Yves"
 };
 
-    public string[] nomsDeFamille =
+    private string[] nomsDeFamille =
 {
     "Adam",
     "Albert",
@@ -295,8 +295,20 @@ public class IAGenerator : MonoBehaviour
 
     void Start()
     {
-        initializeIA();
-        StartCoroutine(simulateIA());
+        //initializeIA();
+        //StartCoroutine(simulateIA());
+    }
+
+    public string GetRandomLastName()
+    {
+        string lastName = nomsDeFamille[Random.Range(0, nomsDeFamille.Length)];
+        return lastName;
+    }
+
+    public string GetRandomFirstName()
+    {
+        string firstName = nomsDeFamille[Random.Range(0, nomsDeFamille.Length)];
+        return firstName;
     }
 
     private void initializeIA()
@@ -318,12 +330,46 @@ public class IAGenerator : MonoBehaviour
             lastName = nomsDeFamille[Random.Range(0 , nomsDeFamille.Length)],
             defenseStat = Random.Range(2, 20),
             attackStat = Random.Range(2, 20),
+            strenght = Random.Range(5, 10),
             maxHp = Random.Range(80, 150),
             weaponType = (weaponType)Random.Range(0, System.Enum.GetValues(typeof(weaponType)).Length)
         };
 
         return ia;
 
+    }
+
+    public void CreatehumainFromData(CharacterData data, GameObject body, Vector3 pos, int i = 0)
+    {
+        GameObject newHumain = Instantiate(body, pos ,Quaternion.identity);
+        newHumain.transform.position = new Vector3(newHumain.transform.position.x + i , newHumain.transform.position.y, newHumain.transform.position.z);
+        HumanoidStates state = newHumain.GetComponent<HumanoidStates>();
+        Creature creature = newHumain.GetComponent<Creature>();
+        if(state == null || creature == null)
+        {
+            Debug.LogError("prefab d'humain invalide");
+            return;
+        }
+
+        state.attackStat = data.attackStat;
+        state.defenceStat = data.defenseStat;
+        state.strenght = data.strenght;
+        creature.firstName = data.firstName;
+        creature.lastName = data.lastName;
+        creature.faction = data.faction;
+
+    }
+
+    public CharacterData CreateDataFromNpc(NpcSO npc)
+    {
+        CharacterData data = new CharacterData();
+        data.firstName = npc.firstName;
+        data.lastName = npc.lastName;
+        data.attackStat = npc.attackStat;
+        data.defenseStat = npc.defenceStat;
+        data.faction = npc.faction;
+        data.strenght = npc.strenght;
+        return data;
     }
 }
 
@@ -334,6 +380,7 @@ public class CharacterData
     public FactionSO faction;
     public int defenseStat;
     public int attackStat;
+    public float strenght;
     public int maxHp;
     public string lastName;
     public string firstName;

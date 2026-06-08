@@ -12,7 +12,7 @@ public class Health : MonoBehaviour
     public float blood;
     float chance;
 
-    private void Die()
+    public void Die()
     {
         OnDeath?.Invoke();
         isDead = true;
