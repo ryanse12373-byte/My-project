@@ -3,7 +3,7 @@ using UnityEngine;
 public class WeaponPlacementTemp : MonoBehaviour
 {
 [SerializeField] private Transform cam;
-[SerializeField] private Vector3 offset;
+public Vector3 offset;
 
 void Update()
 {

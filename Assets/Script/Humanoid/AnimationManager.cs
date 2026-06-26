@@ -3,7 +3,9 @@ using UnityEngine;
 public class AnimationManager : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private CombatAction combatAction;
+    //[SerializeField] private CombatAction combatAction;
+    [SerializeField] CombatAttack attack;
+    [SerializeField] CombatDefense defense;
     [SerializeField] private Health health;
     [SerializeField] private GameObject stunedVfx;
     [SerializeField] private GameObject damageVfx;
@@ -12,6 +14,16 @@ public class AnimationManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip attackSound;
     [SerializeField] private AudioClip parrySound;
+
+    void Start()
+    {
+        Invoke("GetAnimator", 1);
+    }
+
+    void GetAnimator()
+    {
+        animator = GetComponentInChildren<Animator>();
+    }
 
 
     public virtual void PlayAttackAnim()
@@ -42,17 +54,17 @@ public class AnimationManager : MonoBehaviour
 
     void OnEnable()
     {
-        combatAction.OnAttack += PlayAttackAnim;
-        combatAction.OnParry += PlayParryAnim;
-        combatAction.OnStun += PlayStunedAnim;
+        attack.OnAttack += PlayAttackAnim;
+        defense.OnParry += PlayParryAnim;
+        attack.OnStun += PlayStunedAnim;
         health.OnDamage += PlayDamageAnim;
     }
 
     void OnDisable()
     {
-        combatAction.OnAttack -= PlayAttackAnim;
-        combatAction.OnParry -= PlayParryAnim;
-        combatAction.OnStun -= PlayStunedAnim;
+        attack.OnAttack -= PlayAttackAnim;
+        defense.OnParry -= PlayParryAnim;
+        attack.OnStun -= PlayStunedAnim;
         health.OnDamage -= PlayDamageAnim;
     }
 

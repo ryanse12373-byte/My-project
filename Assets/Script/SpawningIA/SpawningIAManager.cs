@@ -16,15 +16,23 @@ public class SpawningIAManager : MonoBehaviour
     [SerializeField] private GameObject humain;
     [SerializeField] private SpectatorManager spectator;
 
+    [SerializeField] private CustomWeaponSO weapon;
+
     [SerializeField] private LayerMask ground;
 
     private FactionSO SelectedFaction;
     private Material SelectedFace;
 
     private Material[] faces;
+    [SerializeField] private PatrolFormationSO formation;
 
+    public JobPackageSO leader;
+
+    public JobPackageSO soldier;
     void Start()
     {
+        IAGenerator.Instance.leader = leader;
+        IAGenerator.Instance.soldier = soldier;
         gameObject.SetActive(false);
 
         SetupFactions();
@@ -83,9 +91,13 @@ public class SpawningIAManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.V)&& spectator.isSpectate)
+        if(Input.GetKeyDown(KeyCode.V) && spectator.isSpectate)
         {
             SpawnIa();
+        }
+        if(Input.GetKeyDown(KeyCode.B) && spectator.isSpectate)
+        {
+            spawnPatrol();
         }
     }
 
@@ -169,14 +181,32 @@ public class SpawningIAManager : MonoBehaviour
             //Setup id pour faire genre mais en vrai c inutil pour l'instant
             data.id = Random.Range(0, 1000);
 
-            IAGenerator.Instance.CreatehumainFromData(data, humain, hit.point);
-                
+            GameObject ia;
+            IAGenerator.Instance.CreatehumainFromData(data, humain, hit.point, out ia);
+            SwordBuilder.SpawnWeapon(ia, weapon, weapon.offset);
+            
         }
         else
         {
             Debug.LogError("Ne peut pas spawn D'ia ici");
         }
+
+
         
+    }
+
+    void spawnPatrol()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 100f, ground))
+        {
+            IAGenerator.Instance.SpawnPatrol(humain, SelectedFaction, hit.point, weapon, formation);
+        }
+        else
+        {
+            Debug.LogError("Ne peut pas spawn De patrol ici");
+        }
     }
 
 }

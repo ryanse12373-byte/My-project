@@ -11,6 +11,8 @@ public class Creature : MonoBehaviour
     [SerializeField] private GameObject selected;
     public Health health;
     public RaceSO race;
+    public bool isPlayer;
+    public Cities citie;
 
     public void SetSelected(bool value)
     {

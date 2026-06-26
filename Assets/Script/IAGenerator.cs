@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class IAGenerator : MonoBehaviour
 {
     public static IAGenerator Instance;
+    public GameObject patrolObject;
+
+    public JobPackageSO leader;
+
+    public JobPackageSO soldier;
 
     void Awake()
     {
@@ -311,6 +317,18 @@ public class IAGenerator : MonoBehaviour
         return firstName;
     }
 
+    public void AddJobsToIA(GameObject ia, JobPackageSO jobs)
+    {
+        AIController controller = ia.GetComponent<AIController>();
+
+        if(ia == null)
+        {
+            Debug.LogError("L'ia " + ia.name + " n'a pas de AIController");
+        }
+
+        controller.package = jobs;
+    }
+
     private void initializeIA()
     {
         for (int i = 0; i < SimulatedIANumber; i++)
@@ -331,7 +349,7 @@ public class IAGenerator : MonoBehaviour
             defenseStat = Random.Range(2, 20),
             attackStat = Random.Range(2, 20),
             strenght = Random.Range(5, 10),
-            maxHp = Random.Range(80, 150),
+            //maxHp = Random.Range(80, 150),
             weaponType = (weaponType)Random.Range(0, System.Enum.GetValues(typeof(weaponType)).Length)
         };
 
@@ -339,7 +357,7 @@ public class IAGenerator : MonoBehaviour
 
     }
 
-    public void CreatehumainFromData(CharacterData data, GameObject body, Vector3 pos, int i = 0)
+    public void CreatehumainFromData(CharacterData data, GameObject body, Vector3 pos, out GameObject humain ,int i = 0)
     {
         GameObject newHumain = Instantiate(body, pos ,Quaternion.identity);
         newHumain.transform.position = new Vector3(newHumain.transform.position.x + i , newHumain.transform.position.y, newHumain.transform.position.z);
@@ -348,6 +366,7 @@ public class IAGenerator : MonoBehaviour
         if(state == null || creature == null)
         {
             Debug.LogError("prefab d'humain invalide");
+            humain = null;
             return;
         }
 
@@ -357,19 +376,97 @@ public class IAGenerator : MonoBehaviour
         creature.firstName = data.firstName;
         creature.lastName = data.lastName;
         creature.faction = data.faction;
-
+        humain = newHumain;
+        creature.race = ReturnRaceFromFaction(data.faction);
+        
     }
+
 
     public CharacterData CreateDataFromNpc(NpcSO npc)
     {
-        CharacterData data = new CharacterData();
-        data.firstName = npc.firstName;
-        data.lastName = npc.lastName;
-        data.attackStat = npc.attackStat;
-        data.defenseStat = npc.defenceStat;
-        data.faction = npc.faction;
-        data.strenght = npc.strenght;
+        CharacterData data = new CharacterData
+        {
+            firstName = npc.firstName,
+            lastName = npc.lastName,
+            attackStat = npc.attackStat,
+            defenseStat = npc.defenceStat,
+            faction = npc.faction,
+            strenght = npc.strenght
+        };
+
         return data;
+    }
+
+    public RaceSO ReturnRaceFromFaction(FactionSO faction)
+    {
+        int total = 0;
+
+        for (int i = 0; i < faction.races.Count; i++)
+        {
+            total += faction.races[i].amount;
+        }
+
+        int random = Random.Range(0, total);
+        int current = 0;
+
+        for (int i = 0; i < faction.races.Count; i++)
+        {
+            current += faction.races[i].amount;
+            if (random < current)
+            {
+                return faction.races[i].race;
+            }
+        }
+
+        return null;
+    
+    }
+
+    public void SpawnPatrol(GameObject humain , FactionSO faction, Vector3 position, CustomWeaponSO weaponData, PatrolFormationSO formation)
+    {
+        GameObject newPatrolobject = Instantiate(patrolObject, position, Quaternion.identity);
+        FormationPatroling patrol = newPatrolobject.GetComponent<FormationPatroling>();
+        print(formation.slots.Count);
+        GameObject leaderObject = null;
+
+        patrol.formation = formation.slots;
+
+        for (int i = 0; i < formation.slots.Count + 1; i++)
+        {
+            
+            CharacterData data = CreateCharacter(Random.Range(0 , 100));
+            data.faction = faction;
+
+            GameObject ia;
+            CreatehumainFromData(data, humain, position, out ia);
+            SwordBuilder.SpawnWeapon(ia, weaponData, weaponData.offset);
+            
+            ia.GetComponent<PatrolComponent>().enabled = false;
+            ia.GetComponent<SoloPatrolBrain>().enabled = false;
+            
+            if(i == 0)
+            {
+                patrol.leader = ia.GetComponent<NavMeshAgent>();
+                ia.GetComponent<AIController>().package = leader;
+                leaderObject = ia.gameObject;
+            }
+            else
+            {
+                NavMeshAgent agent = ia.GetComponent<NavMeshAgent>();
+                agent.speed *= 2;
+                patrol.folowers.Add(agent);
+                ia.GetComponent<AIController>().package = soldier;
+                
+                if(leaderObject == null)
+                {
+                    Debug.LogError("le patrol leader du patrol " + patrol.name + "n'a pas reussi a etre bien instatiate");
+                    return;
+                }
+
+                ia.GetComponent<PatrolLeaderContainer>().leader = leaderObject;
+            }
+
+        }
     }
 }
 

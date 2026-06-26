@@ -10,9 +10,9 @@ public class playerDescription : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             RaycastHit hit;
-            Debug.DrawRay(playerOrientation.position + playerOrientation.forward , playerOrientation.forward * range, Color.red);
 
-            if (Physics.Raycast(playerOrientation.position + playerOrientation.forward , playerOrientation.forward, out hit, range))
+
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, range))
             {
                 Creature creature = hit.collider.GetComponent<Creature>();
                 if(creature != null)
@@ -41,7 +41,7 @@ public class playerDescription : MonoBehaviour
             if (Physics.Raycast(playerOrientation.position + playerOrientation.forward , playerOrientation.forward, out hit, range))
             {
                 Creature creature = hit.collider.GetComponent<Creature>();
-                if(creature != null)
+                if(creature != null && creature.health != null)
                 {
                     creature.health.Die();
                 }

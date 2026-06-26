@@ -28,6 +28,12 @@ public class SpectatorManager : MonoBehaviour
 
     void Spectate()
     {
+        if (!isSpectate)
+        {
+            player.transform.position = Camera.main.transform.position;
+            Camera.main.transform.position = cameraHolder.transform.position;
+        }
+        
         cameraHolder.enabled = !isSpectate;
         player.SetActive(!isSpectate);
         freeCam.enabled = isSpectate;
@@ -35,10 +41,6 @@ public class SpectatorManager : MonoBehaviour
         staminaUi.SetActive(!isSpectate);
         SpawningUi.SetActive(isSpectate);
 
-        if (!isSpectate)
-        {
-            player.transform.position = Camera.main.transform.position;
-            Camera.main.transform.position = cameraHolder.transform.position;
-        }
+        
     }
 }

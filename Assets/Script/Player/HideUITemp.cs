@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HideUITemp : MonoBehaviour
@@ -9,5 +10,9 @@ public class HideUITemp : MonoBehaviour
         {
             UI.SetActive(!UI.activeSelf);
         }
+
+
     }
+
 }
+

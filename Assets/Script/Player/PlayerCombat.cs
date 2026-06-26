@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
@@ -10,11 +11,26 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private Animator weaponAnim;
     [SerializeField]private Transform playerOrientation;
     [SerializeField] private Stamina stamina;
+    [SerializeField] private GameObject weaponHolder;
     
     private float range = 4f;
     private float perfectBlockTiming =0.15f;
     private float regenRate = 5;
 
+    void Start()
+    {
+        StartCoroutine(Setup());
+    }
+
+    IEnumerator Setup()
+    {
+        // attend la frame pour laisser l'arme spawn
+        yield return new WaitForEndOfFrame();
+
+        print(weaponHolder.GetComponentInChildren<Transform>().name);
+        weaponAnim = weaponHolder.GetComponentInChildren<Animator>();
+        weaponState = weaponHolder.GetComponentInChildren<WeaponState>();
+    }
     void Update()
     {
         HandleInput();
@@ -22,9 +38,9 @@ public class PlayerCombat : MonoBehaviour
         
     }
     void OnCollisionEnter(Collision col)
-{
-    Debug.Log("Hit: " + col.gameObject.name);
-}
+    {
+        Debug.Log("Hit: " + col.gameObject.name);
+    }
 
     private void HandleInput()
     {

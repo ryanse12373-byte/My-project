@@ -18,3 +18,8 @@ MonoBehaviour:
   allies: 05000000
   enemies: 00000000010000000300000004000000
   neutral: 
+  races:
+  - race: {fileID: 11400000, guid: ed4c812e4e460944bb0b50323dab4c02, type: 2}
+    amount: 6
+  - race: {fileID: 11400000, guid: 13ae824ece2f6fc4fb8ee86a71e6df62, type: 2}
+    amount: 5

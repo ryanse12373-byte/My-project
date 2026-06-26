@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c747c69d83ae74a83a765812f9bae0, type: 3}
+  m_Name: DeviantTorso
+  m_EditorClassIdentifier: Assembly-CSharp::BodyPartSO
+  partName: Torso
+  maxHealth: 150
+  canBleed: 1
+  vital: 0
+  size: 100
+  organs:
+  - {fileID: 11400000, guid: addfb925c343b5c4d83ea2b55a96ba46, type: 2}

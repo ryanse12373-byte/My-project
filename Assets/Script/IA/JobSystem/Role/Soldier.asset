@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd180643d11832f41bdab1673ec19df8, type: 3}
+  m_Name: Soldier
+  m_EditorClassIdentifier: Assembly-CSharp::JobPackageSO
+  jobs:
+  - {fileID: 11400000, guid: eec0e662679efe444aee0d2af1e24934, type: 2}
+  - {fileID: 11400000, guid: ef528e254c56b0f4fbe815cddf54f4b9, type: 2}
+  - {fileID: 11400000, guid: 8459e47c592a8c940bf639cadcc094ae, type: 2}
+  - {fileID: 11400000, guid: 8459e47c592a8c940bf639cadcc094ae, type: 2}

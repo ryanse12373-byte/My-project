@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &12144710634196092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 02d36129551a9af4bbfee869efc4762b, type: 3}
+  m_PrefabInstance: {fileID: 930640236114702637}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 819924651343877830}
+  - component: {fileID: 7603015777492677451}
+  - component: {fileID: 7274683268579058231}
+  m_Layer: 0
+  m_Name: 'SplitSoulBlade (Missing Prefab with guid: 02d36129551a9af4bbfee869efc4762b)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &819924651343877830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 02d36129551a9af4bbfee869efc4762b, type: 3}
+  m_PrefabInstance: {fileID: 930640236114702637}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12144710634196092}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 382325885381301260}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &15847907142677125
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +44,6 @@ GameObject:
   - component: {fileID: 329698288889872528}
   - component: {fileID: 1316022997604188966}
   - component: {fileID: 462401139644941951}
-  - component: {fileID: 8147291540405545738}
   m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
@@ -91,29 +123,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8147291540405545738
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15847907142677125}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1085265032872832271
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +224,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7aead67e6d16c784aac7b1269f2ef817, type: 2}
+  - {fileID: 2100000, guid: 18997a0519e052b4bb76987bb6a38de2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -606,8 +615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 191a6478e22fefa4ea5e7dcb897a58d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stamina
-  value: 100
-  maxValue: 100
+  value: 10000
+  maxValue: 10000
 --- !u!114 &-3031604994731723299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -939,7 +948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
   m_Material: {fileID: 2100000, guid: 82e7a08272c5a994c8ce9d3f36a5ddc7, type: 2}
-  m_DrawDistance: 1000
+  m_DrawDistance: 100
   m_FadeScale: 0.9
   m_StartAngleFade: 180
   m_EndAngleFade: 180
@@ -1013,7 +1022,6 @@ GameObject:
   - component: {fileID: 1613002211680038334}
   - component: {fileID: 6155231148465617787}
   - component: {fileID: 2310745638491608331}
-  - component: {fileID: 6900414793312630673}
   m_Layer: 7
   m_Name: Sphere
   m_TagString: Untagged
@@ -1093,27 +1101,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6900414793312630673
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2835977906336085461}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4310630970506645415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1577,7 +1564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &382325885381301260
 Transform:
   m_ObjectHideFlags: 0
@@ -1668,15 +1655,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 02d36129551a9af4bbfee869efc4762b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7274683268579058231}
-    - targetCorrespondingSourceObject: {fileID: -5117700066308340382, guid: 02d36129551a9af4bbfee869efc4762b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1471994320743724637}
   m_SourcePrefab: {fileID: 100100000, guid: 02d36129551a9af4bbfee869efc4762b, type: 3}
---- !u!1 &12144710634196092 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 02d36129551a9af4bbfee869efc4762b, type: 3}
-  m_PrefabInstance: {fileID: 930640236114702637}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &7603015777492677451
 Animator:
   serializedVersion: 7
@@ -1716,27 +1695,3 @@ MonoBehaviour:
   defenseBonus: 0
   damageType: 1
   rarity: 0
---- !u!4 &819924651343877830 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 02d36129551a9af4bbfee869efc4762b, type: 3}
-  m_PrefabInstance: {fileID: 930640236114702637}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3751510286398370895 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -5117700066308340382, guid: 02d36129551a9af4bbfee869efc4762b, type: 3}
-  m_PrefabInstance: {fileID: 930640236114702637}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1471994320743724637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3751510286398370895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caf2af8e1055ef14fb7631e01e4ae15c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WindTest
-  speed: 2
-  strength: 2

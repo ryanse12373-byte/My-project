@@ -8,6 +8,6 @@ public class StaminaUI : MonoBehaviour
 
     void Update()
     {
-        bar.fillAmount = stamina.value / 100f;
+        bar.fillAmount = stamina.value / stamina.maxValue;
     }
 }

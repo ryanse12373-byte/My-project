@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,4 +17,16 @@ public class FactionSO : ScriptableObject
     public List<int> enemies = new List<int>();
 
     public List<int> neutral = new List<int>();
+
+    public List<RaceAmount> races = new List<RaceAmount>();
+}
+
+
+
+
+[Serializable]
+public class RaceAmount
+{
+    public RaceSO race;
+    public int amount;
 }

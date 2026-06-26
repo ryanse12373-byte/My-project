@@ -4,6 +4,7 @@ using UnityEngine;
 [CustomEditor(typeof(CustomWeaponSO))]
 public class CustomWeaponSOEditor : Editor
 {
+    
     private PreviewRenderUtility previewRenderUtility;
     private GameObject previewInstance;
 
@@ -100,7 +101,7 @@ public class CustomWeaponSOEditor : Editor
         if(GUILayout.Button("Spawn Sword Prefab"))
         {
             CustomWeaponSO data = (CustomWeaponSO)target;
-            Instantiate(SwordBuilder.Build(data));
+            SwordBuilder.Build(data);
         }
 
     }

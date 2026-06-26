@@ -2,9 +2,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class IABrain : MonoBehaviour
+public class SoloPatrolBrain : MonoBehaviour
 {
-    [SerializeField] private CombatAction combatAction;
+    //[SerializeField] private CombatAction combatAction;
+    [SerializeField] private CombatTargeting vison;
     [SerializeField] private PatrolComponent patrol;
     [SerializeField] private NavMeshAgent agent;
     private bool isPatroling;
@@ -21,20 +22,19 @@ private IEnumerator Tick()
     {
         
         if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
-    {
-        isPatroling = false;
-    }
+        {
+            isPatroling = false;
+        }
+        
         PatrolManager();
-        yield return new WaitForSeconds(0.2f); // fréquence du tick
+        yield return new WaitForSeconds(0.4f); // fréquence du tick
         
     }
 }
 
 private void PatrolManager()
 {
-    if (combatAction.ennemy != null &&
-        combatAction.ennemyHealth != null &&
-        !combatAction.ennemyHealth.isDead)
+    if (vison.HasTarget)
     {
         isPatroling = false;
         return;
@@ -45,9 +45,9 @@ private void PatrolManager()
 }
 
     void Patrol()
-{
-    print("jeffrey kirk");
-    isPatroling = true;
-    patrol.RandomPatrol();
-}
+    {
+        print("jeffrey kirk");
+        isPatroling = true;
+        patrol.RandomPatrol();
+    }
 }
