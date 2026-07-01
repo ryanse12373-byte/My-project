@@ -22,8 +22,16 @@ public class AttackEnemyJob : AIJob
 
     public override bool CanRun()
     {
+        fleeEnemyJob job = controller.jobs.Find(x => x is fleeEnemyJob) as fleeEnemyJob;
+
         targeting.UpdateTarget();
-        return targeting.HasTarget;
+        
+        if(job != null)
+        {
+            Debug.LogError("ne peut pas assignier fleeEnemyJob et AttackEnemyJob");
+        }
+
+        return job == null && targeting.HasTarget;
     }
 
     public override float GetPriority()

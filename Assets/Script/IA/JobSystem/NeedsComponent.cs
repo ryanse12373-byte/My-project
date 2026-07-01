@@ -15,7 +15,8 @@ public class NeedsComponent : MonoBehaviour
 
     void Start()
     {
-        energie = 100;
+        energie = Random.Range(30, 100);
+        hunger = Random.Range(30, 100);
     }
 
     private void Update()

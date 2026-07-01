@@ -13,6 +13,7 @@ public class Creature : MonoBehaviour
     public RaceSO race;
     public bool isPlayer;
     public Cities citie;
+    public Inventory inventory;
 
     public void SetSelected(bool value)
     {
@@ -30,6 +31,9 @@ public class Creature : MonoBehaviour
     {
         if (health == null)
             health = GetComponent<Health>();
+        
+        if(inventory == null)
+            inventory = GetComponent<Inventory>();
     }
 
     void GenerateBody()
@@ -38,21 +42,25 @@ public class Creature : MonoBehaviour
         if (race.normalBody == null) return;
         foreach (var partSO in race.normalBody)
         {
-            BodyPart part = new BodyPart();
-            part.data = partSO;
-            part.currentHealth = partSO.maxHealth;
-            part.vital = partSO.vital;
+            BodyPart part = new BodyPart
+            {
+                data = partSO,
+                currentHealth = partSO.maxHealth,
+                vital = partSO.vital,
 
-            part.organs = new List<Organ>();
+                organs = new List<Organ>()
+            };
 
             foreach (var organSO in partSO.organs)
             {
-                Organ organ = new Organ();
-                organ.data = organSO;
-                organ.currentHealth = organSO.maxHealth;
-                organ.efficase = organSO.efficase;
-                organ.function = organSO.function;
-                organ.vital = organSO.vital;
+                Organ organ = new Organ
+                {
+                    data = organSO,
+                    currentHealth = organSO.maxHealth,
+                    efficase = organSO.efficase,
+                    function = organSO.function,
+                    vital = organSO.vital
+                };
 
                 part.organs.Add(organ);
             }

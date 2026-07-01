@@ -15,7 +15,8 @@ public class Cities : MonoBehaviour
     // le corps de base des habitant de la ville
     [SerializeField] private GameObject body;
     [SerializeField] private CustomWeaponSO weaponData;
-    public WorkStation[] workStations;
+    public GeneriqueWorkStation[] workStations;
+    public BedWorkStation[] bedWorkStations;
 
     [SerializeField] private Terrain terrain;
 
@@ -40,9 +41,14 @@ public class Cities : MonoBehaviour
             CharacterData iaData = IAGenerator.Instance.CreateCharacter(i);
             iaData.faction = faction;
             IAGenerator.Instance.CreatehumainFromData(iaData, body,center.position, out ia ,i);
-            SwordBuilder.SpawnWeapon(ia,weaponData, weaponData.offset);
             IAGenerator.Instance.AddJobsToIA(ia, GetRandomJobPackage(citiesJobs));
+            if (ia.GetComponent<AIController>().package.name != "Worker(Bottom)")
+            {
+                SwordBuilder.SpawnWeapon(ia,weaponData, weaponData.offset);
+            }
+
             ia.GetComponent<Creature>().citie = this;
+
         }
     }
 
@@ -64,18 +70,9 @@ public class Cities : MonoBehaviour
         {
             return hit.position;
         }
-        Debug.LogError("epstein4ever");
+        Debug.LogError("Essaye de trouver un point au hasard dans la ville mais n'a pas reussi");
         return point;
     }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Instantiate(workStations[0], GetRandomPointInCitie(), Quaternion.identity);
-        }
-    }
-
 
 
     void OnDrawGizmosSelected()
@@ -83,11 +80,15 @@ public class Cities : MonoBehaviour
         Gizmos.color = Color.blueViolet;
         Gizmos.DrawWireSphere(center.position, size);
     }
+
+    void Awake()
+    {
+        SetupWorkStation();
+    }
+
+    void SetupWorkStation()
+    {
+        workStations = GetComponentsInChildren<GeneriqueWorkStation>();
+        bedWorkStations = GetComponentsInChildren<BedWorkStation>();
+    }
 }
-
-
-
-
-
-
-

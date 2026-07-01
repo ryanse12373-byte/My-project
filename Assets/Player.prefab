@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &810799713594572075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4751661699945052247}
+  m_Layer: 0
+  m_Name: groundChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4751661699945052247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810799713594572075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8178619644992067440}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2715945753518870745
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +182,8 @@ MonoBehaviour:
   selected: {fileID: 0}
   health: {fileID: 2658538516226152038}
   race: {fileID: 11400000, guid: ed4c812e4e460944bb0b50323dab4c02, type: 2}
+  isPlayer: 1
+  citie: {fileID: 0}
 --- !u!114 &6593815625913835069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,6 +250,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   playerState: {fileID: 6593815625913835069}
   states: {fileID: 6122096939521796663}
+  weaponState: {fileID: 0}
+  weaponAnim: {fileID: 0}
   playerOrientation: {fileID: 3483375225397696913}
   stamina: {fileID: 8162922009389310755}
   weaponHolder: {fileID: 6842839277104150223}
@@ -257,12 +292,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8178619644992067440}
-  - component: {fileID: 3352340986852225283}
   - component: {fileID: 1049389942766085517}
   - component: {fileID: 4964468162372708742}
   - component: {fileID: 4463730096279833633}
   - component: {fileID: 8810178091529754612}
   - component: {fileID: 5486750443828451778}
+  - component: {fileID: 3653187133776297670}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -287,35 +322,9 @@ Transform:
   - {fileID: 3483375225397696913}
   - {fileID: 3001995356220252666}
   - {fileID: 3611416613807660366}
+  - {fileID: 4751661699945052247}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!54 &3352340986852225283
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3830307121093646225}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!114 &1049389942766085517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,13 +351,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6048d72fc7c428f4a838a6c5c6fbe4c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 60
   orientation: {fileID: 3483375225397696913}
-  playerHeight: 2
+  speed: 6
+  sprintSpeed: 9
+  jumpHeight: 1.5
+  gravity: -20
+  groundCheck: {fileID: 4751661699945052247}
+  groundDistance: 0.3
   groundMask:
     serializedVersion: 2
     m_Bits: 64
-  groundDrag: 7
 --- !u!114 &4463730096279833633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,7 +404,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   weaponData: {fileID: 11400000, guid: 4fce7b6b6d0f86d428092b70b80eb4cb, type: 2}
   weaponHolder: {fileID: 6842839277104150223}
-  offset: {fileID: 3567777009055061752}
+--- !u!143 &3653187133776297670
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3830307121093646225}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4751866279107442502
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,15 @@ public class Inventory : MonoBehaviour
         if(!items.Contains(item)) return;
         items.Remove(item);
     }
+
+    public Item equipedItem;
+
+    public EquipementSlot[] equipementSlots;
+
+    void Update()
+    {
+        
+    }
 }
 
 

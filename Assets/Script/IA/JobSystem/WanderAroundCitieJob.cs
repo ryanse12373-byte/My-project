@@ -7,6 +7,7 @@ public class WanderAroundCitieJob : AIJob
 
     private Cities citie;
 
+
     public WanderAroundCitieJob(AIController controller)
         : base(controller)
     {
@@ -30,7 +31,7 @@ public class WanderAroundCitieJob : AIJob
 
     public override float GetPriority()
     {
-        return 5;
+        return 1;
     }
 
     public override void Start()
@@ -52,4 +53,8 @@ public class WanderAroundCitieJob : AIJob
     {
         agent.ResetPath();
     }
+
+    
+    
+    
 }

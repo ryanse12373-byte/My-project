@@ -31,5 +31,5 @@ public class WorkjobFactory : JobFactorySO
             needs,
             agent
         );
-}
+    }
 }

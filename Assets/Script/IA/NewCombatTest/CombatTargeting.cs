@@ -6,6 +6,12 @@ public class CombatTargeting : MonoBehaviour
     [SerializeField] float visionAngle = 120f;
     [SerializeField] LayerMask detectionLayer;
     [SerializeField] LayerMask obstacleLayer;
+
+    private Vector3 lastKnownPosition;
+    private float memoryTime = 3f;
+    private float lastSeenTimer;
+
+
     private Creature selfCreature;
 
     private readonly Collider[] buffer = new Collider[64];
@@ -28,105 +34,157 @@ public class CombatTargeting : MonoBehaviour
             Mathf.Cos(visionAngle * 0.5f * Mathf.Deg2Rad);
     }
 
-    public void UpdateTarget()
+    private bool IsTargetValid(Creature target)
+{
+    if (target == null) return false;
+    if (target.health.isDead) return false;
+
+    float dist = (target.transform.position - transform.position).sqrMagnitude;
+    if (dist > detectionRadius * detectionRadius) return false;
+
+    Vector3 dir = (target.transform.position - transform.position).normalized;
+
+    float dot = Vector3.Dot(transform.forward, dir);
+    if (dot < cosHalfAngle) return false;
+
+    if (Physics.Raycast(transform.position + Vector3.up * 1.5f,
+        dir,
+        Mathf.Sqrt(dist),
+        obstacleLayer))
     {
-        if (CurrentTarget != null &&
-            CurrentTarget.health.isDead)
+        return false;
+    }
+
+    return true;
+}
+
+public bool HasMemory =>
+    CurrentTarget != null && lastSeenTimer > 0;
+
+public Vector3 LastKnownPosition => lastKnownPosition;
+
+    public void UpdateTarget()
+{
+    if (CurrentTarget != null)
+    {
+        if(IsTargetValid(CurrentTarget))
+        {
+            lastKnownPosition = CurrentTarget.transform.position;
+            lastSeenTimer = memoryTime;
+        }
+        else
+        {
+            lastSeenTimer -= Time.deltaTime;
+
+            if(lastSeenTimer <= 0)
+            {
+                ClearTarget();
+            }
+        }
+    }
+
+    FindTarget();
+}
+
+private void FindTarget()
+{
+    int count = Physics.OverlapSphereNonAlloc(
+        transform.position,
+        detectionRadius,
+        buffer,
+        detectionLayer);
+
+    Creature bestTarget = null;
+    float bestDist = float.MaxValue;
+
+    Vector3 position = transform.position;
+    Vector3 forward = transform.forward;
+
+    // 🔴 1. On vérifie si la target actuelle est encore valide
+    if (CurrentTarget != null)
+    {
+        bool stillValid =
+            !CurrentTarget.health.isDead &&
+            Vector3.Distance(CurrentTarget.transform.position, position) <= detectionRadius;
+
+        if (!stillValid)
         {
             ClearTarget();
         }
-
-        FindTarget();
+        else
+        {
+            // on garde une légère priorité à la target actuelle
+            bestTarget = CurrentTarget;
+            bestDist = (CurrentTarget.transform.position - position).sqrMagnitude;
+        }
     }
 
-    private void FindTarget()
+    // 🔴 2. scan des ennemis
+    for (int i = 0; i < count; i++)
     {
-        int count = Physics.OverlapSphereNonAlloc(
-            transform.position,
-            detectionRadius,
-            buffer,
-            detectionLayer);
+        Creature candidate = buffer[i].GetComponent<Creature>();
 
-        Debug.Log(name + " trouve colliders : " + count);
+        if (candidate == null)
+            continue;
 
-        Creature bestTarget = null;
-        float bestDist = float.MaxValue;
+        if (candidate == selfCreature)
+            continue;
 
-        Vector3 position = transform.position;
-        Vector3 forward = transform.forward;
+        if (candidate.health.isDead)
+            continue;
 
-        for (int i = 0; i < count; i++)
-        {
-            Creature candidate =
-                buffer[i].GetComponent<Creature>();
+        if (candidate.faction == selfCreature.faction)
+            continue;
 
 
-
-
-            if (candidate == null)
-                continue;
-
-            if (candidate == selfCreature)
-                continue;
-
-            if (candidate.health.isDead)
-                continue;
-
-            if(candidate.faction == selfCreature.faction)
-                continue;
-
-
-                
-
-            Vector3 dir =
-                candidate.transform.position - position;
-
-            float sqrDist = dir.sqrMagnitude;
-
-            dir.Normalize();
-
-            float dot = Vector3.Dot(forward, dir);
-
-            if (dot < cosHalfAngle)
-                continue;
-
-            if (Physics.Raycast(
-                position + Vector3.up * 1.5f,
-                dir,
-                Mathf.Sqrt(sqrDist),
-                obstacleLayer))
-            {
-                continue;
-            }
-
-            /*if (!IsEnemy(candidate))
-                continue;
-
-            var slot = candidate.GetComponent<CombatTargetSlot>();
-            if (slot == null || !slot.CanAcceptAttacker())
-                continue;
-            */
-
-            if (sqrDist < bestDist)
-            {
-                bestDist = sqrDist;
-                bestTarget = candidate;
-            }
-        }
-
+        if(!IsEnemy(candidate))
+            continue;
         
 
-        if(bestTarget != null)
-        {
-            CombatTargetSlot slot =
-                bestTarget.GetComponent<CombatTargetSlot>();
+        Vector3 dir = candidate.transform.position - position;
+        float sqrDist = dir.sqrMagnitude;
 
-            if(slot == null || slot.RegisterAttacker())
-            {
-                CurrentTarget = bestTarget;
-            }
+        dir.Normalize();
+
+        float dot = Vector3.Dot(forward, dir);
+
+        if (dot < cosHalfAngle)
+            continue;
+
+        if (Physics.Raycast(
+            position + Vector3.up * 1.5f,
+            dir,
+            Mathf.Sqrt(sqrDist),
+            obstacleLayer))
+        {
+            continue;
+        }
+
+        // 🔴 3. sélection du meilleur target
+        if (sqrDist < bestDist)
+        {
+            bestDist = sqrDist;
+            bestTarget = candidate;
         }
     }
+
+    // 🔴 4. assignation intelligente
+    if (bestTarget != null)
+    {
+        if (CurrentTarget != bestTarget)
+        {
+            CurrentTarget?.GetComponent<CombatTargetSlot>()?.RemoveAttacker();
+        }
+
+        CombatTargetSlot slot =
+            bestTarget.GetComponent<CombatTargetSlot>();
+
+        if (slot == null || slot.RegisterAttacker())
+        {
+            CurrentTarget = bestTarget;
+        }
+    }
+}
 
     private bool IsEnemy(Creature target)
     {

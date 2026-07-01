@@ -66,7 +66,7 @@ public class PlayerActionManager : MonoBehaviour
 
     void Paint(int x, int y, TerrainData data)
     {
-        int size = 2;
+        int size = 1;
 
         float[,,] maps = data.GetAlphamaps(x, y, size, size);
 
@@ -78,7 +78,7 @@ public class PlayerActionManager : MonoBehaviour
                 maps[i, j, 1] = 1f; // ajoute terre labourée
             }
         }
-
+        
         data.SetAlphamaps(x, y, maps);
     }
     bool IsTilled(Vector3 worldPos)

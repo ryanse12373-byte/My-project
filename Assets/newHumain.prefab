@@ -729,6 +729,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NeedsComponent
   hunger: 0
+  energie: 0
+  Kirkness: 0
+  isResting: 0
 --- !u!114 &4066654727292621185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,7 +744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5851431e881e3d4ba802598994cc598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIController
-  package: {fileID: 11400000, guid: a8f7ccfb7506f0a4a9c88b2879146010, type: 2}
+  package: {fileID: 11400000, guid: 8f14d1fae31eebe4eb724989b193e15b, type: 2}
   debugCurrentJob: 
   hasAction: 0
 --- !u!114 &1108678418545403443
@@ -795,6 +798,7 @@ MonoBehaviour:
   health: {fileID: 7796695073041986532}
   race: {fileID: 11400000, guid: ed4c812e4e460944bb0b50323dab4c02, type: 2}
   isPlayer: 0
+  citie: {fileID: 0}
 --- !u!114 &7796695073041986532
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -83,7 +83,6 @@ public void instantiateHealth(Creature creature)
         description.SetActive(false);
         creature.SetSelected(false);
     }
-
 }
 
 

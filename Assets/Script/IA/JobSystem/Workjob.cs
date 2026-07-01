@@ -8,7 +8,7 @@ public class Workjob : AIJob
 
 
     private NeedsComponent needs;
-    private WorkStation workStation;
+    private GeneriqueWorkStation workStation;
     private NavMeshAgent agent;
 
     public Workjob(
@@ -21,7 +21,7 @@ public class Workjob : AIJob
         this.needs = needs;
         this.agent = agent;
 
-        WorkStation[] stations = controller.GetComponent<Creature>().citie.workStations;
+        GeneriqueWorkStation[] stations = controller.GetComponent<Creature>().citie.workStations;
 
         if(stations.Length < 1)
         {
@@ -51,7 +51,7 @@ public class Workjob : AIJob
 
     public override bool CanRun()
     {
-        return needs.energie > 50 && workStation != null && workStation.workPoints.Length > 0;
+        return needs.energie > 50  && workStation != null && workStation.workPoints.Length > 0;
     }
 
     public override void Start()
@@ -62,36 +62,22 @@ public class Workjob : AIJob
 
     public override void Tick()
     {
-        float stoppingDistance = 0.2f;
-        if(agent.remainingDistance < agent.stoppingDistance + stoppingDistance)
+        if(agent.remainingDistance < agent.stoppingDistance)
         {
-            if(needs.isResting)
-            {
-                needs.isResting = false;
-            }
             if (!workStation.isUsed)
             {
+                workStation.workParicle.SetActive(true);
+                controller.transform.rotation = Quaternion.Euler(-workStation.transform.forward);
                 workStation.isUsed = true;
             }
         }
-        /*else
-        {
 
-            timer += Time.deltaTime;
-
-            if(timer >= tickRate)
-            {
-                timer = 0;
-
-                agent.SetDestination(workStation.workPoints[Random.Range(0, workStation.workPoints.Length)].position);
-            }
-        }*/
     }
 
     public override void Stop()
     {
-        needs.isResting = true;
         agent.ResetPath();
+        workStation.workParicle.SetActive(false);
         workStation.isUsed = false;
     }
 }

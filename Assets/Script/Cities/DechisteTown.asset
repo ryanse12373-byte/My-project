@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CitiesSO
   Name: Dechaut Town
   faction: {fileID: 11400000, guid: 05d766836a81f4747b5930839b57d408, type: 2}
-  maxPop: 50
+  maxPop: 10
